@@ -6,8 +6,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "nodemon --exec ts-node ./server.ts",
-    "start": "tsc && npm run dev",
-    "lint": "eslint . --ext .ts"
+    "start": "npm run build && npm run dev",
+    "lint": "eslint . --ext .ts",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "inferenceintelligence",
