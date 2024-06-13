@@ -2,6 +2,7 @@
 import { Sequelize } from 'sequelize';
 import config from './config';
 import User from '../models/user'; // Assuming User model is already defined
+import Session from '../models/session'; // Assuming User model is already defined
 
 const sequelize = new Sequelize('postgres', config.dbUserName, config.dbPassword, {
   host: config.dbHost,
@@ -14,7 +15,7 @@ export const connectToDatabase = async ()=> {
     await sequelize.authenticate();
     console.log('Connection has been established successfully.');
     // Sync models if necessary
-    await sequelize.sync();
+    await sequelize.sync({ alter: true });
     console.log('Database synchronized.');
     return true
   } catch (error) {

@@ -1,16 +1,16 @@
 {
-  "name": "joggle-dev",
+  "name": "real-estate",
   "version": "1.0.0",
-  "description": "joggle dev",
+  "description": "real estate",
   "main": "server.ts",
   "scripts": {
     "build": "tsc",
     "dev": "nodemon --exec ts-node ./server.ts",
-    "start": "npm run build && npm run dev",
+    "start": "node build/server.js",
     "lint": "eslint . --ext .ts"
-    },
+  },
   "keywords": [],
-  "author": "inferenceintelligence",
+  "author": "sreeram",
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",

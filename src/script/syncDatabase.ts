@@ -1,5 +1,6 @@
 import sequelize from '../config/db';
 import User from '../models/user';
+import Session from '../models/session';
 
 const syncDatabase = async () => {
   try {

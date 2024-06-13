@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/user';
 import { JWTToken } from '../config/jwtToken';
+import Session from '../models/session';
 
 declare module 'express-serve-static-core' {
     interface Request {
@@ -27,15 +28,18 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
             error: "Provide the token"
         })
     }
+    // check if exist session table
+    const session = await Session.findOne({ where: { session_token: token } });
     const jwtCustomerToken = JWTToken.validateJWTToken(token);
-  
-    if (!jwtCustomerToken) {
+
+    if (!session || !jwtCustomerToken){
         return res.status(401).json({
             status: "failure",
             message: "Unauthorized",
             error: "Token expired"
         })
     }
+
     const { id, role } = jwtCustomerToken as JwtPayload;
     // Check if user exists
     const user = await User.findByPk(id);
