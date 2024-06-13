@@ -49,8 +49,7 @@ User.init(
     salt: {
         type: DataTypes.STRING,
         allowNull: false,
-      },
-      
+      }
   },
   {
     sequelize,

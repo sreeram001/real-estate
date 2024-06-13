@@ -20,6 +20,8 @@ class LoginRoutes {
   intializeRoutes() {
     this.router.post("/register", userController.registerUser);
     this.router.post("/login", userController.loginUser);
+    this.router.get("/session_update", userController.updateSession);
+    this.router.get("/logout", userController.logout);
   }
 }
 

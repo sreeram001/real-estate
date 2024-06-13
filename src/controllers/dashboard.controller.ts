@@ -1,11 +1,11 @@
 /*
-  File: login.controller.ts
+  File: dashboard.controller.ts
   Author: Sreeram 
   Description:This Folder handles all the controllers of the dashboard.
   Created: Jun 09, 2024
 */
 import express, { Request, Response } from "express";
-import { userBodyRequest, loginRequest } from "../types/user.t"
+// import { userBodyRequest, loginRequest } from "../types/user.t"
 
 export default class DashBoardController {
     static async dashBoard(
