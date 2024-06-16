@@ -14,14 +14,14 @@ export default class LoginController {
     try {
       await userService.registerUser(userRequestBody);
       // await userService.saveSession(data.token, data.id)
-      return res.status(201).json({
-        status: "success",
+      return res.status(200).json({
+        status: 200,
         message: "Registered Successfully"
         // data: data,
       });
     } catch (error: any) {
       return res.status(500).json({
-        status: "failure",
+        status: 500,
         message: error.errors[0].message,
         error: error
       });
@@ -36,7 +36,7 @@ export default class LoginController {
       if (data) {
         if (error === 2 || error === 1) {
           return res.status(200).json({
-            status: "success",
+            status: 400,
             message: data.message,
             data: data.token
           });
@@ -44,19 +44,19 @@ export default class LoginController {
 
         await userService.saveSession(data.token, data.id);
         return res.status(200).json({
-          status: "success",
+          status: 200,
           message: data.message,
           data: data.token
         });
       }
       return res.status(401).json({
-        status: "failure",
+        status: 401,
         message: error,
         error: error
       });
     } catch (error: any) {
       return res.status(500).json({
-        status: "failure",
+        status: 500,
         message: error.errors[0],
         error: error
       });
@@ -68,7 +68,7 @@ export default class LoginController {
     const token = authHeader && authHeader.split(" ")[1];
     if (!token) {
       return res.status(401).json({
-        status: "failure",
+        status: 401,
         message: "Unauthorized",
         error: "Authorization token missing"
       });
@@ -77,19 +77,19 @@ export default class LoginController {
       const { data, error } = await userService.sessionUpdate(token);
       if (error) {
         return res.status(400).json({
-          status: "failure",
+          status: 400,
           message: error,
           error: error
         });
       }
       return res.status(200).json({
-        status: "success",
+        status: 200,
         message: "session updated successfully",
         data: data
       });
     } catch (error: any) {
       return res.status(500).json({
-        status: "failure",
+        status: 500,
         message: error.errors[0],
         error: error
       });
@@ -110,13 +110,13 @@ export default class LoginController {
       await userService.logout(req.token || "");
     } catch (error: any) {
       return res.status(500).json({
-        status: "failure",
+        status: 500,
         message: error.errors[0],
         error: error
       });
     }
     return res.status(200).json({
-      status: "success",
+      status: 200,
       message: "user logout successfully",
       data: "user logout successfully"
     });
@@ -128,13 +128,13 @@ export default class LoginController {
       await userService.sessionCreate(req.userId || 0, req.token || "");
     } catch (error: any) {
       return res.status(500).json({
-        status: "failure",
+        status: 500,
         message: "Internal server error",
         error: error
       });
     }
     return res.status(200).json({
-      status: "success",
+      status: 200,
       message: "Password reset successfully"
     });
   }

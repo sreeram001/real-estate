@@ -13,7 +13,7 @@ export default class Server {
     const corsOptions: CorsOptions = {
       origin: "*",
       exposedHeaders: ["*"],
-      allowedHeaders: ["*"],
+      allowedHeaders: ["*"]
     };
 
     app.use(cors(corsOptions));
@@ -24,9 +24,7 @@ export default class Server {
     // Data base and redis connectin
     (async () => {
       const isDbConnected = await connectToDatabase();
-      isDbConnected && app.emit('ready');
+      isDbConnected && app.emit("ready");
     })();
-
   }
-
 }

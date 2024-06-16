@@ -24,7 +24,7 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
     return res.status(401).json({
-      status: "failure",
+      status: 401,
       message: "Unauthorized",
       error: "Provide the token"
     });
@@ -35,7 +35,7 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
 
   if (!session || !jwtCustomerToken) {
     return res.status(401).json({
-      status: "failure",
+      status: 401,
       message: "Unauthorized",
       error: "Token expired"
     });
@@ -45,17 +45,18 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
 
   // Check if user exists
   const user = await UserService.userSelect(id);
-  console.log(user, "user");
 
   if (!user) {
     return res.status(401).json({
-      status: "failure",
+      status: 401,
       message: "Unauthorized",
       error: "User Not fond"
     });
     // return res.sendStatus(401); // Unauthorized if user not found
   }
+  // eslint-disable-next-line require-atomic-updates
   req.userId = id || 0;
+  // eslint-disable-next-line require-atomic-updates
   req.role = role || "";
   next();
 }

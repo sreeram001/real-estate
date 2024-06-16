@@ -23,7 +23,7 @@ export async function BasicAuth(req: Request, res: Response, next: NextFunction)
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
     return res.status(401).json({
-      status: "failure",
+      status: 401,
       message: "Unauthorized",
       error: "Provide the token"
     });
@@ -32,7 +32,7 @@ export async function BasicAuth(req: Request, res: Response, next: NextFunction)
 
   if (!jwtCustomerToken) {
     return res.status(401).json({
-      status: "failure",
+      status: 401,
       message: "Unauthorized",
       error: "Token expired"
     });
@@ -43,7 +43,7 @@ export async function BasicAuth(req: Request, res: Response, next: NextFunction)
   const user = await User.findByPk(id);
   if (!user) {
     return res.status(401).json({
-      status: "failure",
+      status: 401,
       message: "Unauthorized",
       error: "User Not fond"
     });
