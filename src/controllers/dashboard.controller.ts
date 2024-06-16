@@ -28,7 +28,7 @@ export default class DashBoardController {
     ];
     // console.log(error.errors[0].ValidationErrorItem.message,"testt");
     return res.status(200).json({
-      status: "success",
+      status: 200,
       message: "Real estate list",
       data: data
     });
