@@ -5,7 +5,7 @@ import { ApiHeaderAuthentication } from "../middleware/authentication";
 
 const router = Router();
 
-router.use("/user",userRoutes);
-router.use("/dashboard",ApiHeaderAuthentication,dashboardRoutes);
+router.use("/user", userRoutes);
+router.use("/dashboard", ApiHeaderAuthentication, dashboardRoutes);
 
 export default router;

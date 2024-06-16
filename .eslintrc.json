@@ -5,12 +5,11 @@
     "es6": true,
     "node": true
   },
-  "extends": "eslint:recommended",
+  "parser": "@typescript-eslint/parser",
   "overrides": [],
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
+
+  "extends": ["plugin:@typescript-eslint/recommended"],
+  "parserOptions": { "ecmaVersion": 2018, "sourceType": "module" },
   "rules": {
     "constructor-super": 2,
     "getter-return": 2,
@@ -57,10 +56,7 @@
         "code": 300
       }
     ],
-    "space-before-function-paren": [
-      0,
-      "always"
-    ],
+    "space-before-function-paren": [0, "always"],
     "no-trailing-spaces": "error",
     "arrow-spacing": "error",
     "no-extra-boolean-cast": 2,
@@ -68,7 +64,7 @@
     "no-global-assign": "error",
     "no-eval": 2,
     "array-callback-return": "error",
-    "no-implicit-globals": "error",
+    "no-implicit-globals": "warn",
     "no-useless-catch": 2,
     "no-with": 2,
     "valid-typeof": 2,
@@ -81,36 +77,18 @@
         "maxBOF": 0
       }
     ],
+    "@typescript-eslint/no-explicit-any": "off",
     "prefer-const": 2,
-    "class-methods-use-this": [
-      0
-    ],
-    "no-undef": [
-      1
-    ],
-    "no-case-declarations": [
-      1
-    ],
-    "no-return-assign": [
-      1
-    ],
-    "no-param-reassign": [
-      2
-    ],
-    "camelcase": [
-      0
-    ],
-    "no-underscore-dangle": [
-      0,
-      "always"
-    ],
+    "class-methods-use-this": [0],
+    "no-undef": [1],
+    "no-case-declarations": [1],
+    "no-return-assign": [1],
+    "no-param-reassign": [2],
+    "camelcase": [0],
+    "no-underscore-dangle": [0, "always"],
     "no-fallthrough": 2,
-    "no-var": [
-      2
-    ],
-    "no-unused-vars": [
-      2
-    ],
+    "no-var": [2],
+    "no-unused-vars": [2],
     "no-empty": 2,
     "no-empty-character-class": 2,
     "no-duplicate-imports": 2,
@@ -152,32 +130,17 @@
     // require default case in switch statements
     "default-case": 2,
     "no-console": 1,
-    "yield-star-spacing": [
-      "error",
-      "both"
-    ],
+    "yield-star-spacing": ["error", "both"],
     "wrap-regex": 2,
     "unicode-bom": 2,
-    "template-tag-spacing": [
-      "error",
-      "always"
-    ],
+    "template-tag-spacing": ["error", "always"],
     "switch-colon-spacing": "error",
     "space-unary-ops": "error",
     "space-in-parens": "error",
-    "space-before-blocks": [
-      "error",
-      "always"
-    ],
-    "semi-style": [
-      "error",
-      "last"
-    ],
+    "space-before-blocks": ["error", "always"],
+    "semi-style": ["error", "last"],
     "semi-spacing": "error",
-    "object-curly-spacing": [
-      "error",
-      "always"
-    ],
+    "object-curly-spacing": ["error", "always"],
     "no-tabs": "error",
     "no-multi-spaces": [
       "error",
@@ -185,10 +148,7 @@
         "ignoreEOLComments": false
       }
     ],
-    "no-mixed-spaces-and-tabs": [
-      "error",
-      "smart-tabs"
-    ],
+    "no-mixed-spaces-and-tabs": ["error", "smart-tabs"],
     "no-useless-escape": "off",
     "no-use-before-define": [
       2,
@@ -209,14 +169,8 @@
         "after": true
       }
     ],
-    "eol-last": [
-      "error",
-      "always"
-    ],
-    "comma-style": [
-      "error",
-      "last"
-    ],
+    "eol-last": ["error", "always"],
+    "comma-style": ["error", "last"],
     "comma-spacing": [
       "error",
       {
@@ -224,10 +178,7 @@
         "after": true
       }
     ],
-    "arrow-parens": [
-      "error",
-      "always"
-    ],
+    "arrow-parens": ["error", "always"],
     "array-bracket-spacing": "error",
     "yoda": "error",
     "require-await": "error"
