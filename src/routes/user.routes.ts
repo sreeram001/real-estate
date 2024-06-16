@@ -6,7 +6,7 @@
 */
 import { Router } from "express";
 import userController from "../controllers/user.controller";
-import { ApiHeaderAuthentication } from "../middleware/authentication";
+import { BasicAuth } from "../middleware/basicAuth";
 
 // This Routes For Login
 class LoginRoutes {
@@ -16,12 +16,12 @@ class LoginRoutes {
     this.intializeRoutes();
   }
 
-  
   intializeRoutes() {
     this.router.post("/register", userController.registerUser);
     this.router.post("/login", userController.loginUser);
     this.router.get("/session_update", userController.updateSession);
-    this.router.get("/logout", userController.logout);
+    this.router.put("/forgot_password", BasicAuth, userController.forgotPassword);
+    this.router.get("/logout", BasicAuth, userController.logout);
   }
 }
 

@@ -1,5 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/db';
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/db";
 
 class Session extends Model {
   public id!: number;
@@ -13,22 +13,22 @@ Session.init(
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      allowNull: true
     },
     session_token: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
-      unique:true,
-    } 
+      unique: true
+    }
   },
   {
     sequelize,
-    tableName: 'sessions',
-    timestamps: true,
+    tableName: "sessions",
+    timestamps: true
   }
 );
 

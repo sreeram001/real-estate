@@ -1,0 +1,9 @@
+{
+  "editor.codeActionsOnSave": ["source.fixAll.format", "source.fixAll.eslint"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "prettier.useEditorConfig": false,
+  "prettier.useTabs": false,
+  "prettier.configPath": ".prettierrc.json"
+}

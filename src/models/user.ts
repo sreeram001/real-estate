@@ -1,5 +1,5 @@
-import { DataTypes, Model } from 'sequelize';
-import sequelize from '../config/db';
+import { DataTypes, Model } from "sequelize";
+import sequelize from "../config/db";
 
 class User extends Model {
   public id!: number;
@@ -10,6 +10,7 @@ class User extends Model {
   public status!: boolean;
   public role!: string;
   public salt!: string;
+  public approved!: boolean;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -19,42 +20,50 @@ User.init(
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      primaryKey: true
     },
     name: {
       type: DataTypes.STRING,
-      allowNull: true,
+      allowNull: true
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique:true,
+      unique: true
     },
     mobile_no: {
       type: DataTypes.BIGINT,
-      allowNull: true,
+      allowNull: true
     },
     password: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     status: {
-        type: DataTypes.BOOLEAN,
-        defaultValue:true
+      type: DataTypes.BOOLEAN,
+      defaultValue: true
     },
     role: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
+      type: DataTypes.STRING,
+      allowNull: true
+    },
     salt: {
-        type: DataTypes.STRING,
-        allowNull: false,
-      }
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    approved: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    account_count: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   },
   {
     sequelize,
-    tableName: 'users',
-    timestamps: true,
+    tableName: "users",
+    timestamps: true
   }
 );
 

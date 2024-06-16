@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction } from "express";
+import User from "../models/user";
 import { JWTToken } from "../config/jwtToken";
-import Session from "../models/session";
-import UserService from "../services/user.service";
 
 declare module "express-serve-static-core" {
   // eslint-disable-next-line no-shadow
   interface Request {
     userId?: number;
-    role?: string;
+    token?: string;
   }
 }
 
@@ -19,7 +18,7 @@ interface JwtPayload {
 }
 
 // This is An Middleware function check wether the token valid or not //
-export async function ApiHeaderAuthentication(req: Request, res: Response, next: NextFunction) {
+export async function BasicAuth(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
   if (!token) {
@@ -29,11 +28,9 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
       error: "Provide the token"
     });
   }
-  // check if exist session table
-  const session = await Session.findOne({ where: { session_token: token } });
   const jwtCustomerToken = JWTToken.validateJWTToken(token);
 
-  if (!session || !jwtCustomerToken) {
+  if (!jwtCustomerToken) {
     return res.status(401).json({
       status: "failure",
       message: "Unauthorized",
@@ -41,12 +38,9 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
     });
   }
 
-  const { id, role } = jwtCustomerToken as JwtPayload;
-
+  const { id } = jwtCustomerToken as JwtPayload;
   // Check if user exists
-  const user = await UserService.userSelect(id);
-  console.log(user, "user");
-
+  const user = await User.findByPk(id);
   if (!user) {
     return res.status(401).json({
       status: "failure",
@@ -55,7 +49,9 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
     });
     // return res.sendStatus(401); // Unauthorized if user not found
   }
+  // eslint-disable-next-line require-atomic-updates
   req.userId = id || 0;
-  req.role = role || "";
+  // eslint-disable-next-line require-atomic-updates
+  req.token = token || "";
   next();
 }
