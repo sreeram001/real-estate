@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
 import User from "../models/user";
 import { JWTToken } from "../config/jwtToken";
+import { Request, Response, NextFunction } from "express";
 
 declare module "express-serve-static-core" {
   // eslint-disable-next-line no-shadow
@@ -38,7 +38,7 @@ export async function BasicAuth(req: Request, res: Response, next: NextFunction)
     });
   }
 
-  const { id } = jwtCustomerToken as JwtPayload;
+  const { id, role } = jwtCustomerToken as JwtPayload;
   // Check if user exists
   const user = await User.findByPk(id);
   if (!user) {
@@ -53,5 +53,7 @@ export async function BasicAuth(req: Request, res: Response, next: NextFunction)
   req.userId = id || 0;
   // eslint-disable-next-line require-atomic-updates
   req.token = token || "";
+  // eslint-disable-next-line require-atomic-updates
+  req.role = role || "";
   next();
 }

@@ -1,9 +1,11 @@
-import User from "../models/user";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
-import { JWTToken } from "../config/jwtToken";
+import User from "../models/user";
 import Session from "../models/session";
+import { JWTToken } from "../config/jwtToken";
+import { nullToString } from "../utils/helper";
+import { currentUTCtime } from "../config/moment";
 
 const SALT_ROUNDS = 10;
 
@@ -18,13 +20,15 @@ interface DecodedToken {
 export default class UserService {
   static async registerUser(body: any) {
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
-    const password = body.password || "admin@123";
+    const password = body.password || "Admin@123";
+    const account_count = body.account_count || 10;
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const updatedBody = {
       ...body,
       salt: salt,
-      password: hashedPassword
+      password: hashedPassword,
+      account_count: account_count
     };
     const user = await User.create(updatedBody);
     // const token = JWTToken.create({ id: user.id, email: user.email, mobile_no: user.mobile_no, role: user.role });
@@ -39,19 +43,13 @@ export default class UserService {
     const user = await Session.create(session);
     return { user };
   }
+  static async updateDate(id: number) {
+    await User.update({ last_logged_in: currentUTCtime() }, { where: { id: id } });
+
+    // await User.update({})
+  }
   static async sessionUpdate(token: string) {
     const decodedToken = jwt.decode(token) as DecodedToken | null;
-
-    //Delete existing session
-    const existingSession = await Session.findOne({
-      where: {
-        user_id: decodedToken?.id
-      }
-    });
-
-    if (existingSession) {
-      await existingSession.destroy();
-    }
 
     const tokenUpdated = JWTToken.create({
       id: decodedToken?.id,
@@ -87,7 +85,11 @@ export default class UserService {
     const session = await Session.findOne({ where: { user_id: user.id } });
     let token = "";
     if (session) {
-      return { data: { message: "already logged in another device", token: session.session_token, id: session.id }, error: 2 };
+      const jwtCustomerToken = JWTToken.validateJWTToken(nullToString(session?.session_token));
+      if (jwtCustomerToken) {
+        return { data: { message: "already logged in another device", token: session.session_token, id: session.id }, error: 2 };
+      }
+      session.destroy();
     }
 
     // Generate token
@@ -103,6 +105,7 @@ export default class UserService {
       where: { session_token: token }
     });
   }
+
   static async updatePassword(password: string, id: number) {
     const salt = await bcrypt.genSalt(SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(password, salt);
@@ -123,5 +126,25 @@ export default class UserService {
         approved: true
       }
     });
+  }
+
+  static async checkIfEligible(id: number) {
+    const totalCount = await User.findByPk(id, {
+      attributes: ["account_count"]
+    });
+
+    const activeUserCount = await User.count({
+      where: {
+        created_by: id,
+        status: true
+      }
+    });
+
+    if (totalCount?.dataValues.account_count >= activeUserCount) {
+      return true;
+    }
+    return false;
+
+    // if (count )
   }
 }

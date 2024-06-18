@@ -1,5 +1,5 @@
-import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/db";
+import { DataTypes, Model } from "sequelize";
 
 class Session extends Model {
   public id!: number;

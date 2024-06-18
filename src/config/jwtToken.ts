@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 const jwtSecurityKey = "real-estate";
+
 interface JwtPayload {
   id: number;
   email: string;

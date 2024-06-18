@@ -5,24 +5,48 @@
   Created: Jun 09, 2024
 */
 import { Request, Response } from "express";
+import { currentUTCtime } from "../config/moment";
 import userService from "../services/user.service";
 import { userBodyRequest, loginRequest } from "../types/user.t";
 
 export default class LoginController {
   static async registerUser(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
+    req.body.role = req.body.role || "USER";
+    req.body.status = req.body.sttatus || false;
+    req.body.created_by = req.body.created_by || req.userId;
+    req.body.createdAt = currentUTCtime();
+
+    if (req.role !== "SUPER_ADMIN" && req.role !== "ADMIN") {
+      return res.status(400).json({
+        status: 400,
+        message: "Not authorized for creating a user"
+      });
+    }
+
+    let eligible = true;
+    if (req.role === "ADMIN") {
+      eligible = await userService.checkIfEligible(Number(req.userId));
+    }
+    req.body.status = eligible;
+
     const userRequestBody: userBodyRequest = req.body;
     try {
       await userService.registerUser(userRequestBody);
+      if (!eligible) {
+        return res.status(200).json({
+          status: 200,
+          message: "Active user limit reached"
+        });
+      }
       // await userService.saveSession(data.token, data.id)
       return res.status(200).json({
         status: 200,
         message: "Registered Successfully"
-        // data: data,
       });
     } catch (error: any) {
-      return res.status(500).json({
-        status: 500,
-        message: error.errors[0].message,
+      return res.status(400).json({
+        status: 400,
+        message: error?.errors[0]?.message || "internal server error",
         error: error
       });
     }
@@ -43,9 +67,10 @@ export default class LoginController {
         }
 
         await userService.saveSession(data.token, data.id);
+        await userService.updateDate(data.id);
         return res.status(200).json({
           status: 200,
-          message: data.message,
+          message: "logged in successfully",
           data: data.token
         });
       }
@@ -57,7 +82,7 @@ export default class LoginController {
     } catch (error: any) {
       return res.status(500).json({
         status: 500,
-        message: error.errors[0],
+        message: "internal server error",
         error: error
       });
     }
@@ -90,28 +115,19 @@ export default class LoginController {
     } catch (error: any) {
       return res.status(500).json({
         status: 500,
-        message: error.errors[0],
+        message: "internal server error",
         error: error
       });
     }
   }
-  static async logout(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
-    // const authHeader = req.headers["authorization"];
-    // const token = authHeader && authHeader.split(" ")[1];
-    // if (!token) {
-    //   return res.status(401).json({
-    //     status: "failure",
-    //     message: "Unauthorized",
-    //     error: "Authorization token missing"
-    //   });
-    // }
 
+  static async logout(req: Request, res: Response): Promise<Response<any, Record<string, any>>> {
     try {
       await userService.logout(req.token || "");
     } catch (error: any) {
       return res.status(500).json({
         status: 500,
-        message: error.errors[0],
+        message: "internal server error",
         error: error
       });
     }

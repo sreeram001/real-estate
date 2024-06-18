@@ -5,7 +5,6 @@
   Created: Jun 09, 2024
 */
 import { Request, Response } from "express";
-// import { userBodyRequest, loginRequest } from "../types/user.t"
 
 export default class DashBoardController {
   static dashBoard(req: Request, res: Response): Response<any, Record<string, any>> {
@@ -28,7 +27,7 @@ export default class DashBoardController {
     ];
     // console.log(error.errors[0].ValidationErrorItem.message,"testt");
     return res.status(200).json({
-      status: 200,
+      status: "success",
       message: "Real estate list",
       data: data
     });

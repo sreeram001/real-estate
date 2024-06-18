@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
 // src/index.ts
-import { Sequelize } from "sequelize";
 import config from "./config";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
 import User from "../models/user"; // Assuming User model is already defined
-// eslint-disable-next-line @typescript-eslint/no-unused-vars, no-unused-vars
+import { Sequelize } from "sequelize";
 import Session from "../models/session"; // Assuming User model is already defined
 
 const sequelize = new Sequelize("postgres", config.dbUserName, config.dbPassword, {

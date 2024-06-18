@@ -1,6 +1,6 @@
-import express, { Application } from "express";
-import cors, { CorsOptions } from "cors";
 import Routes from "./routes";
+import cors, { CorsOptions } from "cors";
+import express, { Application } from "express";
 import { connectToDatabase } from "./config/db";
 
 export default class Server {

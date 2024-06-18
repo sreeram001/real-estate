@@ -17,7 +17,7 @@ class LoginRoutes {
   }
 
   intializeRoutes() {
-    this.router.post("/register", userController.registerUser);
+    this.router.post("/register", BasicAuth, userController.registerUser);
     this.router.post("/login", userController.loginUser);
     this.router.get("/session_update", userController.updateSession);
     this.router.put("/forgot_password", BasicAuth, userController.forgotPassword);

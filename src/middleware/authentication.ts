@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
-import { JWTToken } from "../config/jwtToken";
 import Session from "../models/session";
+import { JWTToken } from "../config/jwtToken";
 import UserService from "../services/user.service";
+import { Request, Response, NextFunction } from "express";
 
 declare module "express-serve-static-core" {
   // eslint-disable-next-line no-shadow
@@ -47,8 +47,8 @@ export async function ApiHeaderAuthentication(req: Request, res: Response, next:
   const user = await UserService.userSelect(id);
 
   if (!user) {
-    return res.status(401).json({
-      status: 401,
+    return res.status(400).json({
+      status: 400,
       message: "Unauthorized",
       error: "User Not fond"
     });

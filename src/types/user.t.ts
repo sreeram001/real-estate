@@ -7,6 +7,8 @@ export interface userBodyRequest {
   salt?: string;
   role?: string;
   status: boolean;
+  account_count?: number;
+  created_by?: number;
   createdAt?: Date;
   updatedAt?: Date;
 }

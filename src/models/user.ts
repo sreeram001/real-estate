@@ -1,5 +1,5 @@
-import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/db";
+import { DataTypes, Model } from "sequelize";
 
 class User extends Model {
   public id!: number;
@@ -11,6 +11,9 @@ class User extends Model {
   public role!: string;
   public salt!: string;
   public approved!: boolean;
+  public account_count!: number;
+  public created_by!: number;
+  public last_logged_in!: Date;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
@@ -33,7 +36,8 @@ User.init(
     },
     mobile_no: {
       type: DataTypes.BIGINT,
-      allowNull: true
+      allowNull: false,
+      unique: true
     },
     password: {
       type: DataTypes.STRING,
@@ -41,7 +45,7 @@ User.init(
     },
     status: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true
+      defaultValue: false
     },
     role: {
       type: DataTypes.STRING,
@@ -58,6 +62,14 @@ User.init(
     account_count: {
       type: DataTypes.INTEGER,
       defaultValue: 0
+    },
+    created_by: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    last_logged_in: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   },
   {
